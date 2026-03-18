@@ -14,7 +14,8 @@
 
 ## Dokumentasi Penelitian
 
-- [2.7 Penelitian Terdahulu & Tabel Perbedaan](docs/penelitian-terdahulu.md)
+- [2.7 Penelitian Terdahulu & Tabel Perbedaan — Markdown](docs/penelitian-terdahulu.md)
+- [2.7 Penelitian Terdahulu & Tabel Perbedaan — Word (.docx)](docs/penelitian-terdahulu.docx)
 
 ## Tentang Laravel
 

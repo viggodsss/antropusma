@@ -1,6 +1,6 @@
 # 2.7 Penelitian Terdahulu
 
-Bagian ini merangkum penelitian‑penelitian yang relevan mengenai sistem antrian elektronik, penggunaan barcode/QR Code pada layanan, dan evaluasi metode FIFO. Setiap entri mencakup penulis & tahun, objek penelitian, metode yang digunakan, hasil utama, serta relevansinya dengan studi ini guna memetakan *gap* penelitian.
+Bagian ini merangkum penelitian-penelitian yang relevan mengenai sistem antrian elektronik, penggunaan barcode/QR Code pada layanan, dan evaluasi metode FIFO. Setiap entri mencakup penulis & tahun, objek penelitian, metode yang digunakan, hasil utama, serta relevansinya dengan studi ini guna memetakan *gap* penelitian.
 
 ## Tabel 2.7 Penelitian Terdahulu
 
