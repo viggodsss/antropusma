@@ -1,13 +1,22 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Antropusma — Sistem Antrian Elektronik Puskesmas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Antropusma** adalah sistem antrian elektronik berbasis web untuk Puskesmas (Pusat Kesehatan Masyarakat) yang dibangun dengan Laravel. Sistem ini memungkinkan pasien mendaftar antrian secara online dan menerima tiket QR Code sekali pakai yang dipindai oleh petugas admin menggunakan metode FIFO (*First In, First Out*).
 
-## About Laravel
+## Fitur Utama
+
+- Pendaftaran antrian online oleh pasien
+- Penerbitan tiket nomor antrian otomatis per jenis layanan (Dewasa & Lansia, Apotek, Laboratorium)
+- QR Code unik sekali pakai (*one-time token*) per tiket antrian
+- Pemindaian QR Code oleh admin untuk verifikasi dan pemanggilan pasien
+- Kedaluwarsa tiket otomatis (2 jam)
+- Manajemen antrian real-time (menunggu, dipanggil, selesai)
+- Multi-jenis layanan dengan prefiks nomor antrian berbeda
+
+## Dokumentasi Penelitian
+
+- [2.7 Penelitian Terdahulu & Tabel Perbedaan](docs/penelitian-terdahulu.md)
+
+## Tentang Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
