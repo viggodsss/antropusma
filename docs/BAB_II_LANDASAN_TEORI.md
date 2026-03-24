@@ -41,6 +41,10 @@ Basis data relasional seperti MySQL atau MariaDB digunakan untuk menyimpan data 
 
 Antarmuka dikembangkan menggunakan HTML, CSS (Tailwind CSS), dan JavaScript yang memberikan tampilan responsif dan ramah pengguna di berbagai perangkat. Prinsip desain yang diterapkan meliputi kontras warna yang tinggi untuk keterbacaan nomor antrian di layar publik, navigasi yang intuitif, dan *feedback* visual yang jelas untuk setiap aksi pengguna.
 
+### 2.5.4 Layanan Email dan SMTP
+
+SMTP (*Simple Mail Transfer Protocol*) adalah protokol standar untuk pengiriman pesan elektronik (email) antar server. Dalam konteks sistem ini, layanan email berbasis SMTP dimanfaatkan untuk mengirimkan survei kepuasan pasien secara otomatis setelah proses pelayanan selesai. Sistem mengirimkan email dari alamat email pasien yang telah didaftarkan kepada alamat email Admin (dikonfigurasi melalui *mail driver* pada server, misalnya Mailtrap untuk pengembangan atau SMTP Gmail/SendGrid untuk produksi). Laravel menyediakan komponen `Mail` dan `Mailable` yang menyederhanakan proses pengiriman email berformat HTML, termasuk tautan survei yang unik per sesi pelayanan.
+
 ## 2.6 Metodologi Pengembangan: Research and Development (R&D) Terintegrasi dengan Prototyping
 
 ### 2.6.1 Research and Development (R&D)

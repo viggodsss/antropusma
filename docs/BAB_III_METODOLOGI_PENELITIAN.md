@@ -133,7 +133,7 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 
 #### 3.5.3.2 Iterasi 2 — Prototipe Pengembangan (Minggu 3–4)
 
-**Tujuan:** Menambahkan fitur pemindaian barcode untuk pencatatan kedatangan, pemanggilan nomor antrian, dashboard operasional Petugas Klaster, dan notifikasi status antrian.
+**Tujuan:** Menambahkan fitur pemindaian barcode untuk pencatatan kedatangan, pemanggilan nomor antrian, dashboard operasional Petugas Klaster, notifikasi status antrian, dan pengiriman survei kepuasan pasien via email setelah pelayanan selesai.
 
 **Fitur yang dikembangkan:**
 
@@ -145,6 +145,7 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 | 4 | Layar tampilan nomor yang dipanggil (display publik) | Sistem |
 | 5 | Notifikasi/indikator estimasi waktu tunggu | Pasien |
 | 6 | Manajemen akun pengguna dasar | Admin |
+| 7 | Pengiriman survei kepuasan otomatis via email setelah pelayanan selesai | Sistem (otomatis), Pasien (mengisi) |
 
 **Jadwal Iterasi 2:**
 
@@ -166,6 +167,8 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 - [ ] AC-2.5: Pasien dapat melihat estimasi waktu tunggu yang diperbarui secara real-time (atau near-real-time).
 - [ ] AC-2.6: Admin dapat menambah, menonaktifkan, dan mengubah peran akun pengguna.
 - [ ] AC-2.7: Petugas Klaster tidak dapat mengakses halaman manajemen pengguna yang merupakan hak eksklusif Admin (validasi RBAC lengkap).
+- [ ] AC-2.8: Setelah Petugas Klaster menandai tiket sebagai `done`, sistem secara otomatis mengirimkan email survei kepuasan ke alamat email pasien yang terdaftar; email diteruskan/disalin (*CC*) ke alamat email Admin yang dikonfigurasi di SMTP.
+- [ ] AC-2.9: Email survei memuat tautan unik yang mengarah ke formulir survei untuk tiket bersangkutan; tautan hanya dapat digunakan satu kali (*single-use token*).
 
 **Mapping Peran → Aksi → Timestamp (Iterasi 2):**
 
@@ -174,7 +177,8 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 | Petugas Klaster | Scan barcode (catat kedatangan) | `queue_records.arrival_time` |
 | Petugas Klaster | Panggil nomor | `queue_records.called_time` |
 | Petugas Klaster | Mulai pelayanan | `queue_records.served_time` |
-| Petugas Klaster | Selesai pelayanan | `queue_records.finish_time` |
+| Petugas Klaster | Selesai pelayanan (trigger survei) | `queue_records.finish_time` |
+| Sistem | Kirim email survei otomatis | `surveys.email_sent_at` |
 | Admin | Buat/ubah akun pengguna | `users.updated_at` |
 
 ---
@@ -192,8 +196,10 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 | 3 | Penyempurnaan UI/UX berdasarkan umpan balik Iterasi 1 & 2 | Semua |
 | 4 | Pengaturan prioritas antrian (mis. lansia, darurat) | Admin |
 | 5 | Pencatatan hasil pelayanan dan catatan petugas | Petugas Klaster |
-| 6 | Backup dan keamanan sistem | Admin |
-| 7 | Pengujian UAT final dengan semua pemangku kepentingan | Admin, Petugas Klaster, Pasien |
+| 6 | Halaman formulir survei kepuasan pasien (dari tautan email) | Pasien |
+| 7 | Rekapitulasi dan tampilan hasil survei kepuasan di dasbor Admin | Admin |
+| 8 | Backup dan keamanan sistem | Admin |
+| 9 | Pengujian UAT final dengan semua pemangku kepentingan | Admin, Petugas Klaster, Pasien |
 
 **Jadwal Iterasi 3:**
 
@@ -215,12 +221,16 @@ Pengembangan sistem dibagi menjadi **tiga iterasi**, masing-masing berdurasi **d
 - [ ] AC-3.5: Seluruh alur sistem dari registrasi pasien hingga selesai pelayanan dapat diselesaikan tanpa error kritis dalam [X] skenario uji.
 - [ ] AC-3.6: Waktu respons sistem untuk operasi utama (scan, panggil nomor) tidak melebihi [X] detik pada kondisi [X] pengguna bersamaan.
 - [ ] AC-3.7: Seluruh data sensitif (kata sandi) tersimpan dalam bentuk *hash* dan akses ke halaman admin terlindungi oleh autentikasi.
+- [ ] AC-3.8: Pasien dapat mengakses formulir survei kepuasan melalui tautan dalam email yang diterima; setelah formulir diisi dan dikirimkan, data survei tersimpan di basis data dan notifikasi email terkirim ke alamat Admin (SMTP) secara otomatis.
+- [ ] AC-3.9: Admin dapat melihat rekapitulasi hasil survei kepuasan (skor rata-rata dan komentar) di dasbor, difilter berdasarkan periode dan klaster.
 
 **Mapping Peran → Aksi → Timestamp (Iterasi 3):**
 
 | Peran | Aksi | Field Timestamp |
 |---|---|---|
 | Petugas Klaster | Simpan catatan hasil pelayanan | `queue_records.notes_updated_at` |
+| Pasien | Mengisi dan mengirimkan formulir survei | `surveys.submitted_at` |
+| Sistem | Kirim notifikasi survei ke Admin via SMTP | `surveys.admin_notified_at` |
 | Admin | Generate laporan | `reports.generated_at` |
 | Admin | Ekspor laporan | `reports.exported_at` |
 | Admin | Atur prioritas antrian | `services.priority_updated_at` |
@@ -249,6 +259,8 @@ Berdasarkan hasil wawancara dan observasi awal, kebutuhan fungsional sistem diid
 - Mengonfigurasi layanan, klaster, dan jam operasional.
 - Menetapkan aturan prioritas antrian.
 - Melihat dan mengekspor laporan analitik.
+- Melihat rekapitulasi hasil survei kepuasan pasien dan mengekspor data survei.
+- Mengonfigurasi alamat email SMTP penerima notifikasi survei.
 - Melakukan backup dan pemulihan data.
 
 **Petugas Klaster:**
@@ -258,10 +270,13 @@ Berdasarkan hasil wawancara dan observasi awal, kebutuhan fungsional sistem diid
 - Memanggil nomor antrian berikutnya.
 - Memperbarui status tiket (menunggu → dipanggil → dilayani → selesai).
 - Mencatat hasil pelayanan dan catatan tambahan.
+- Menandai tiket sebagai selesai, yang secara otomatis memicu pengiriman survei kepuasan kepada pasien.
 
 **Pasien:**
 - Melakukan registrasi dan menerima tiket dengan nomor unik dan barcode.
 - Melihat posisi antrian dan estimasi waktu tunggu.
+- Menerima email survei kepuasan otomatis setelah pelayanan selesai.
+- Mengisi dan mengirimkan formulir survei kepuasan melalui tautan dalam email.
 - Membatalkan atau menjadwal ulang tiket (jika diizinkan oleh kebijakan instansi).
 
 ### 3.6.2 Kebutuhan Non-Fungsional
@@ -283,15 +298,15 @@ Sistem dirancang menggunakan arsitektur *client-server* berbasis web dengan tiga
 
 ### 3.7.2 Use Case Diagram
 
-Aktor utama sistem adalah Admin, Petugas Klaster, dan Pasien. Use case utama meliputi: Registrasi Pasien, Penerbitan Tiket & Barcode, Pencatatan Kedatangan melalui Scan, Panggil Nomor, Pembaruan Status Pelayanan, dan Pengelolaan Laporan. *(Use Case Diagram disertakan pada Lampiran [X].)*
+Aktor utama sistem adalah Admin, Petugas Klaster, dan Pasien. Use case utama meliputi: Registrasi Pasien, Penerbitan Tiket & Barcode, Pencatatan Kedatangan melalui Scan, Panggil Nomor, Pembaruan Status Pelayanan, Isi Survei Kepuasan (Pasien via tautan email), dan Pengelolaan Laporan & Hasil Survei (Admin). *(Use Case Diagram disertakan pada Lampiran [X].)*
 
 ### 3.7.3 Activity Diagram
 
-Activity diagram memodelkan urutan aktivitas pada skenario kunci, yaitu alur dari registrasi pasien hingga selesainya pelayanan. Diagram mencakup titik keputusan seperti registrasi online vs. registrasi di loket, validasi barcode saat scan, dan penanganan pembatalan tiket. *(Activity Diagram disertakan pada Lampiran [X].)*
+Activity diagram memodelkan urutan aktivitas pada skenario kunci, yaitu alur dari registrasi pasien hingga selesainya pelayanan dan pengisian survei kepuasan. Diagram mencakup titik keputusan seperti registrasi online vs. registrasi di loket, validasi barcode saat scan, penanganan pembatalan tiket, serta alur pengiriman dan pengisian survei kepuasan (sistem otomatis mengirim email → pasien membuka tautan → pasien mengisi formulir → sistem menyimpan data dan mengirim notifikasi ke Admin). *(Activity Diagram disertakan pada Lampiran [X].)*
 
 ### 3.7.4 Entity Relationship Diagram (ERD)
 
-Entitas utama yang dimodelkan adalah `users`, `patients`, `tickets`, `queue_records`, `services`, dan `logs`. Kardinalitas utama: satu pasien dapat memiliki banyak tiket (1–N), satu tiket memiliki satu queue record (1–1), dan satu petugas dapat menangani banyak queue records (1–N). *(ERD disertakan pada Lampiran [X].)*
+Entitas utama yang dimodelkan adalah `users`, `patients`, `tickets`, `queue_records`, `services`, `surveys`, dan `logs`. Kardinalitas utama: satu pasien dapat memiliki banyak tiket (1–N), satu tiket memiliki satu queue record (1–1), satu queue record dapat memiliki satu survei kepuasan (1–1), dan satu petugas dapat menangani banyak queue records (1–N). *(ERD disertakan pada Lampiran [X].)*
 
 ### 3.7.5 Perancangan Basis Data
 
@@ -300,19 +315,23 @@ Tabel inti dan field utamanya adalah sebagai berikut.
 | Tabel | Field Utama |
 |---|---|
 | `users` | id, username, password_hash, role, name, contact, created_at, updated_at |
-| `patients` | id, name, dob, contact, created_at |
+| `patients` | id, name, dob, contact, email, created_at |
 | `tickets` | id, ticket_no (UNIQUE), barcode (UNIQUE), patient_id (FK), service_id (FK), scheduled_time, status, created_at |
 | `queue_records` | id, ticket_id (FK), server_id (FK), arrival_time, called_time, served_time, finish_time, notes |
 | `services` | id, name, description, priority, is_active |
+| `surveys` | id, queue_record_id (FK), token (UNIQUE), score, comment, email_sent_at, submitted_at, admin_notified_at |
 | `logs` | id, user_id (FK), action, resource, timestamp |
+
+Tabel `surveys` menyimpan satu baris per sesi pelayanan yang telah selesai. Field `token` berisi nilai acak yang unik dan hanya dapat digunakan sekali (*single-use*) untuk menjamin bahwa satu tautan survei hanya dapat diisi oleh satu pasien. Field `email_sent_at` mencatat kapan email survei dikirimkan oleh sistem, `submitted_at` mencatat kapan pasien mengisi dan mengirimkan formulir, dan `admin_notified_at` mencatat kapan notifikasi pengiriman hasil survei dikirim ke Admin melalui SMTP.
 
 ### 3.7.6 Perancangan Antarmuka
 
 Antarmuka dirancang sesuai peran:
 
-- **Dasbor Admin**: statistik ringkasan, manajemen akun pengguna, konfigurasi layanan, laporan dan ekspor.
+- **Dasbor Admin**: statistik ringkasan, manajemen akun pengguna, konfigurasi layanan, laporan dan ekspor, rekapitulasi hasil survei kepuasan (skor rata-rata, grafik tren, dan komentar pasien), serta konfigurasi alamat email SMTP penerima notifikasi survei.
 - **Dasbor Petugas Klaster**: daftar antrian aktif, tombol panggil nomor, antarmuka scan barcode, formulir catatan pelayanan.
 - **Halaman Pasien**: formulir registrasi, tampilan tiket/barcode, posisi antrian, estimasi waktu tunggu.
+- **Halaman Survei Kepuasan** *(diakses via tautan email)*: formulir penilaian layanan (skala dan pertanyaan terbuka terkait pengalaman menggunakan sistem antrian berbasis barcode), tombol kirim yang memicu pengiriman data ke server dan notifikasi email ke Admin.
 
 Prinsip desain: kontras tinggi untuk keterbacaan di layar publik, responsif untuk perangkat mobile, dan umpan balik visual yang jelas untuk setiap aksi.
 
@@ -393,3 +412,4 @@ Berikut adalah daftar placeholder dalam bab ini yang perlu diisi oleh peneliti s
 | 10 | Subbab 3.8 angka responden UAT dan `[X]%` penerimaan | Jumlah peserta UAT dan target penerimaan |
 | 11 | Tabel 3.10 kolom Minggu ke- | Nomor minggu aktual sesuai jadwal penelitian |
 | 12 | Lampiran `[X]` pada Subbab 3.7.2, 3.7.3, 3.7.4 | Nomor lampiran diagram |
+| 13 | Konfigurasi SMTP (`.env`) | Alamat email Admin penerima notifikasi survei, nama driver mail (Mailtrap/Gmail/SendGrid), kredensial SMTP; **jangan di-*commit* ke repositori publik** |
