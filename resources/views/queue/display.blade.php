@@ -165,7 +165,7 @@
                 <div class="orbit-ring orbit-ring-3"><div class="orbit-dot"></div></div>
                 
                 <div class="logo-svg-container">
-                    <img src="{{ asset('images/loadingpage.mp4') }}" alt="Loading">
+                    <img src="{{ asset('images/loadingpage.svg') }}" alt="Loading">
                 </div>
             </div>
             

@@ -181,9 +181,9 @@
                                 <p class="text-xs font-semibold text-gray-600 mt-3 mb-2">Pilihan ruangan:</p>
                                 <div class="flex flex-wrap gap-2">
                                     <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang KIA']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Ruang KIA</a>
-                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang KIA']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Ruang VK/bersalin</a>
-                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang KIA']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Ruang imunisasi</a>
-                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang KIA']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">pelayanan bayi,balita anak prasekolah dan remaja</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang VK/Bersalin']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Ruang VK/bersalin</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruang Imunisasi']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Ruang imunisasi</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Ibu & Anak - Ruangan Klaster 2 (Bayi/Balita/Remaja)']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">pelayanan bayi, balita anak prasekolah dan remaja</a>
                                 </div>
                             </div>
                         </div>
@@ -229,9 +229,9 @@
                                 <p class="text-sm text-gray-500 mt-1">Pelayanan penunjang lintas klaster untuk kondisi gawat, farmasi, dan lab.</p>
                                 <p class="text-xs font-semibold text-gray-600 mt-3 mb-2">Pilihan ruangan:</p>
                                 <div class="flex flex-wrap gap-2">
-                                    <a href="{{ route('queue.create', ['service_type' => 'Klaster 4 - Poli Anggrek (Penyakit Menular)']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #ef4444, #dc2626);">UGD & Observasi</a>
-                                    <a href="{{ route('queue.create', ['service_type' => 'Klaster 4 - Ruang TB']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Farmasi/apotik</a>
-                                    <a href="{{ route('queue.create', ['service_type' => 'Klaster 4 - Ruang Kesling']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">laboratorium</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Lintas Klaster - Ruang UGD & Observasi']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #ef4444, #dc2626);">UGD & Observasi</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Lintas Klaster - Farmasi/Apotek']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">Farmasi/apotik</a>
+                                    <a href="{{ route('queue.create', ['service_type' => 'Lintas Klaster - Laboratorium']) }}" class="inline-block px-3.5 py-1.5 text-xs font-semibold rounded-full text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #10b981, #059669);">laboratorium</a>
                                 </div>
                             </div>
                         </div>

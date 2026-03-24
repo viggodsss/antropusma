@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Queue;
 use App\Models\Setting;
-use App\Services\WhatsAppNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
@@ -13,10 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class QueueController extends Controller
 {
-    public function __construct(private readonly WhatsAppNotifier $whatsAppNotifier)
-    {
-    }
-
     private const FARMASI_SERVICE = 'Lintas Klaster - Farmasi/Apotek';
     private const DISPLAY_VIDEO_KEY = 'display_local_videos';
     private const DISPLAY_VIDEO_ORDER_KEY = 'display_local_video_order';
@@ -374,73 +369,5 @@ class QueueController extends Controller
         return view('queue.ticket', compact('queue', 'nextPharmacyQueue', 'needsPharmacyStep', 'isFinalAtPharmacy', 'isExpiredTicket'));
     }
 
-    // Tampilan admin antrian
-    public function admin()
-    {
-        $waiting = Queue::where('status', 'waiting')
-            ->arrivalOrder()
-            ->get();
-        $served = Queue::where('status', 'served')
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        return view('queue.admin', compact('waiting', 'served'));
-    }
-
-    // Panggil antrian berikutnya (FIFO berdasarkan waktu check-in/scan)
-    public function callNext()
-    {
-        $queue = Queue::where('status', 'waiting')
-            ->arrivalOrder()
-            ->first();
-
-        if ($queue) {
-            $queue->update([
-                'status' => 'called',
-                'called_at' => now(),
-                'called_by_role' => 'admin',
-            ]);
-
-            $this->whatsAppNotifier->sendQueueCalledNotification($queue);
-        }
-
-        return redirect()->back()->with('message', $queue ? 'Antrian dipanggil: ' . $queue->queue_number : 'Tidak ada antrian menunggu');
-    }
-
-    // Lewati antrian saat ini
-    public function skip($id)
-    {
-        $queue = Queue::findOrFail($id);
-        $queue->update(['status' => 'skipped']);
-
-        return redirect()->back();
-    }
-
-    // Tandai antrian sudah selesai
-    public function markServed($id)
-    {
-        $queue = Queue::findOrFail($id);
-        $queue->update(['status' => 'served']);
-
-        return redirect()->back();
-    }
-
-    // Reset/antri ulang
-    public function reset($id)
-    {
-        $queue = Queue::findOrFail($id);
-        
-        // Generate token baru
-        $token = Str::uuid()->toString();
-        
-        $queue->update([
-            'status' => 'waiting',
-            'called_at' => null,
-            'token' => $token,
-            'token_scanned_at' => null,
-        ]);
-
-        return redirect()->back();
-    }
 }
 

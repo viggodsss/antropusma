@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\ProfileController;
 
 require __DIR__.'/auth.php'; // perlu untuk route login/register bawaan Breeze
 
@@ -62,6 +63,17 @@ Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])->m
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout.get');
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE (semua pengguna terautentikasi)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 
 /*

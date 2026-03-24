@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pasien;
 use App\Models\PatientProfile;
 use App\Models\MedicalExamination;
 use App\Models\Prescription;
@@ -16,29 +15,6 @@ use Illuminate\View\View;
 class PatientController extends Controller
 {
     private const FARMASI_SERVICE = 'Lintas Klaster - Farmasi/Apotek';
-
-    /**
-     * Tampilkan form pendaftaran
-     */
-    public function showForm(): View
-    {
-        return view('daftar');
-    }
-
-    /**
-     * Simpan data pasien
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'no_identitas' => 'required|string|max:255|unique:pasiens,no_identitas',
-        ]);
-
-        Pasien::create($validated);
-
-        return back()->with('success', 'Pendaftaran berhasil!');
-    }
 
     /**
      * Dashboard pasien
