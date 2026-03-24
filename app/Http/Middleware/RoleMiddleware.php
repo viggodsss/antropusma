@@ -21,12 +21,10 @@ class RoleMiddleware
         }
 
         $user = Auth::user();
-        $userRole = strtolower(trim((string) $user->role));
-        $allowedRoles = array_map(static fn ($role) => strtolower(trim((string) $role)), $roles);
 
         // Jika role tidak sesuai
-        if (!in_array($userRole, $allowedRoles, true)) {
-            if (in_array('admin', $allowedRoles, true)) {
+        if (!in_array($user->role, $roles)) {
+            if (in_array('admin', $roles)) {
                 Auth::logout();
 
                 return redirect()->guest(route('admin.login'))

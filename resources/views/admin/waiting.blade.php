@@ -1,88 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<div style="padding: 32px 0;">
-    <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
-
-        <div class="admin-page-header">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-                <div>
-                    <h1 class="admin-page-title">Antrian Menunggu</h1>
-                    <p class="admin-page-subtitle">Daftar pasien yang sedang menunggu dipanggil</p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <form method="POST" action="{{ route('admin.markServedAll') }}" onsubmit="return confirm('Tandai semua antrian menunggu menjadi selesai?');">
-                        @csrf
-                        <button type="submit" class="admin-btn btn-danger">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            Selesai Semua
-                        </button>
-                    </form>
-                    <a href="{{ route('admin.dashboard') }}" class="admin-btn btn-secondary">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                        Dashboard
-                    </a>
-                    <a href="{{ route('admin.served') }}" class="admin-btn btn-primary">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Antrian Selesai
-                    </a>
-                </div>
-            </div>
-        </div>
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold mb-8">Antrian Menunggu</h1>
 
         @if(session('success'))
-            <div class="admin-alert alert-success">{{ session('success') }}</div>
+            <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">{{ session('success') }}</div>
         @endif
 
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <div class="admin-card-header-icon" style="background: linear-gradient(135deg, #dbeafe, #bfdbfe);">
-                    <svg class="w-5 h-5" style="color: #2563eb;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <div>
-                    <h2 style="font-size: 16px; font-weight: 700; color: #111827;">Pasien Menunggu Panggilan</h2>
-                    <p style="font-size: 13px; color: #6b7280;">Total: <span style="font-weight: 700; color: #2563eb;">{{ $waiting->count() }}</span> pasien</p>
-                </div>
-            </div>
-
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             @if($waiting->count() > 0)
-                <div style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-100">
                             <tr>
-                                <th style="text-align: left;">No. Antrian</th>
-                                <th style="text-align: left;">Nama Pasien</th>
-                                <th style="text-align: left;">NIK</th>
-                                <th style="text-align: left;">BPJS</th>
-                                <th style="text-align: left;">Keluhan</th>
-                                <th style="text-align: left;">Layanan</th>
-                                <th style="text-align: left;">Terdaftar</th>
-                                <th style="text-align: center;">Aksi</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Nomor Antrian</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Nama Pasien</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">NIK</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Keluhan</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Layanan</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Waktu Terdaftar</th>
+                                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($waiting as $queue)
-                                <tr>
-                                    <td><span style="font-weight: 700; color: #2563eb;">{{ $queue->queue_number }}</span></td>
-                                    <td style="font-weight: 500;">{{ $queue->patient_name }}</td>
-                                    <td>{{ $queue->nik }}</td>
-                                    <td>
-                                        @if($queue->has_bpjs)
-                                            <span class="admin-badge badge-success">Ya</span>
-                                        @else
-                                            <span class="admin-badge badge-gray">Tidak</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $queue->complaint ?? '-' }}</td>
-                                    <td><span class="admin-badge badge-purple">{{ $queue->service_type ?? '-' }}</span></td>
-                                    <td>{{ $queue->created_at->format('d-m-Y H:i') }}</td>
-                                    <td style="text-align: center;">
+                                <tr class="border-b">
+                                    <td class="px-6 py-4 font-semibold text-blue-600">{{ $queue->queue_number }}</td>
+                                    <td class="px-6 py-4">{{ $queue->patient_name }}</td>
+                                    <td class="px-6 py-4 text-sm">{{ $queue->nik }}</td>
+                                    <td class="px-6 py-4 text-sm">{{ $queue->complaint ?? '-' }}</td>
+                                    <td class="px-6 py-4 text-sm">{{ $queue->service_type ?? '-' }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $queue->created_at->format('d-m-Y H:i') }}</td>
+                                    <td class="px-6 py-4">
                                         <form method="POST" action="{{ route('admin.markServed', $queue->id) }}" style="display: inline;">
                                             @csrf
-                                            <button type="submit" class="admin-btn btn-primary" style="font-size: 12px; padding: 6px 14px;">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                                Selesai
-                                            </button>
+                                            <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm">Selesai</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -91,11 +45,15 @@
                     </table>
                 </div>
             @else
-                <div class="admin-empty-state">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <p style="color: #059669; font-weight: 600; font-size: 13px;">Tidak ada antrian yang menunggu.</p>
+                <div class="px-6 py-4 text-gray-600">
+                    ✅ Tidak ada antrian yang menunggu.
                 </div>
             @endif
+        </div>
+
+        <div class="flex gap-4 mt-8">
+            <a href="{{ route('admin.dashboard') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Kembali ke Dashboard</a>
+            <a href="{{ route('admin.served') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Lihat Antrian Selesai</a>
         </div>
     </div>
 </div>
