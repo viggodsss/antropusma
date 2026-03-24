@@ -8,7 +8,7 @@
 <h3>Menunggu:</h3>
 @foreach($waiting as $q)
     <p>
-        {{ $q->queue_number }} - {{ $q->patient_name }}
+        {{ $q->queue_number ?: '---' }} - {{ $q->patient_name }}
         <form method="POST" action="/served/{{ $q->id }}">
             @csrf
             <button>Selesai</button>

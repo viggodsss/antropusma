@@ -2,12 +2,43 @@
 <html>
 <head>
     <title>Sistem Antrian</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- WAJIB TAMBAH INI -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            .navbar .container-fluid {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .nav-right-controls {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .nav-right-controls img {
+                height: 30px !important;
+            }
+            .nav-right-controls .btn {
+                padding: 4px 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand img {
+                height: 32px !important;
+            }
+            .container.mt-4 {
+                margin-top: 1rem !important;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -15,20 +46,21 @@
    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
 
-        <span class="navbar-brand">Sistem Antrian Puskesmas</span>
+        <a class="navbar-brand" href="/">
+            <img src="{{ asset('images/navlogo.png') }}" alt="AntroPusma Logo" style="height: 40px; object-fit: contain;">
+        </a>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center gap-2 nav-right-controls">
 
-            <span class="text-white me-3 fw-bold">
+            <img src="{{ asset('images/kampusnavlogo.png') }}" alt="Campus Logo" style="height: 36px; object-fit: contain;">
+
+            <span class="text-white me-2 fw-bold d-none d-md-inline">
                 👤 {{ auth()->user()->name ?? 'Admin' }}
             </span>
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn btn-light btn-sm">
-                    Logout
-                </button>
-            </form>
+            <a href="{{ route('logout.get') }}" class="btn btn-light btn-sm">
+                Logout
+            </a>
 
         </div>
 

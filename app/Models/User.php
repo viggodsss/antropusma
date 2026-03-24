@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\PatientResetPasswordNotification;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,10 +21,15 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'role',
+        'cluster_number',
         'status',
         'verified_at',
+        'otp_code_hash',
+        'otp_expires_at',
+        'otp_attempts',
     ];
 
     /**
@@ -34,6 +40,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'otp_code_hash',
     ];
 
     /**
@@ -46,7 +53,35 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
+            'cluster_number' => 'integer',
+            'otp_attempts' => 'integer',
             'password' => 'hashed',
         ];
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(PatientProfile::class);
+    }
+
+    public function medicalExaminations()
+    {
+        return $this->hasMany(MedicalExamination::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
+
+    public function queues()
+    {
+        return $this->hasMany(Queue::class);
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new PatientResetPasswordNotification($token));
     }
 }

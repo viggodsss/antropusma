@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-    <h1 class="text-2xl font-bold text-gray-800 text-center">Login Pasien</h1>
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center">Login Pasien</h1>
     <p class="text-sm text-gray-500 text-center mt-1 mb-6">Masuk untuk mengambil nomor antrian online.</p>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />

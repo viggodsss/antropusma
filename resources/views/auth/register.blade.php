@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-    <h1 class="text-2xl font-bold text-gray-800 text-center">Daftar Pasien</h1>
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center">Daftar Pasien</h1>
     <p class="text-sm text-gray-500 text-center mt-1 mb-6">Buat akun baru untuk akses sistem antrian.</p>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-4">
@@ -19,6 +19,14 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full rounded-xl" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Phone Number -->
+        <div>
+            <x-input-label for="phone" :value="__('Nomor HP (WhatsApp)')" />
+            <x-text-input id="phone" class="block mt-1 w-full rounded-xl" type="text" name="phone" :value="old('phone')" required autocomplete="tel" placeholder="08xxxxxxxxxx" />
+            <p class="text-xs text-gray-500 mt-1">Dipakai untuk notifikasi saat antrian Anda dipanggil.</p>
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
         <!-- Password -->

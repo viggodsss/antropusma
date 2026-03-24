@@ -3,6 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "fix:bin-perms": "node scripts/fix-bin-permissions.cjs",
+        "predev": "npm run fix:bin-perms",
+        "prebuild": "npm run fix:bin-perms",
         "build": "vite build",
         "dev": "vite"
     },

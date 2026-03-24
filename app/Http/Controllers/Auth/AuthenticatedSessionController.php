@@ -29,33 +29,38 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
+        $role = strtolower(trim((string) $user->role));
 
-        if ($request->is('admin/login') && $user->role !== 'admin') {
+        if ($request->is('admin/login') && !in_array($role, ['admin', 'petugas'], true)) {
             Auth::logout();
             return redirect()->route('admin.login')
-                ->withErrors(['email' => 'Akun ini bukan admin. Gunakan akun admin yang valid.']);
+            ->withErrors(['email' => 'Akun ini bukan admin/petugas. Gunakan akun yang valid.']);
         }
 
         // 🔥 Pastikan role tidak null
-        if (!$user->role) {
+        if (!$role) {
             Auth::logout();
             return redirect()->route('login')
                 ->withErrors(['email' => 'Role tidak ditemukan.']);
         }
 
-        if (in_array($user->role, ['patient', 'pasien']) && $user->status !== 'approved') {
+        if (in_array($role, ['patient', 'pasien'], true) && $user->status !== 'approved') {
             Auth::logout();
             return redirect()->route('login')
-                ->withErrors(['email' => 'Akun Anda masih menunggu verifikasi admin.']);
+                ->withErrors(['email' => 'Akun belum aktif. Silakan verifikasi OTP dari email terlebih dahulu.']);
         }
 
         // 🔥 Redirect berdasarkan role
-        if ($user->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
+        if ($role === 'admin') {
+            return redirect()->route('admin.dashboard');
         }
 
-        if (in_array($user->role, ['patient', 'pasien'])) {
-            return redirect()->intended(route('dashboard'));
+        if ($role === 'petugas') {
+            return redirect()->route('petugas.dashboard');
+        }
+
+        if (in_array($role, ['patient', 'pasien'], true)) {
+            return redirect()->route('dashboard');
         }
 
         // Jika role tidak dikenal

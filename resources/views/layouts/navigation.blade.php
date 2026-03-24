@@ -21,17 +21,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
-                        {{-- Logo SVG Antropusma --}}
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-cyan-400/40 rounded-xl blur-md group-hover:blur-lg transition-all duration-500 group-hover:bg-cyan-300/50"></div>
-                            <div class="relative bg-white/15 backdrop-blur-xl p-2 rounded-xl border border-white/20 group-hover:border-white/40 group-hover:bg-white/25 transition-all duration-500 group-hover:scale-105">
-                               
-                                    <path d="M12 3.5L5 7.5V12.5C5 16.8 7.9 20.8 12 22C16.1 20.8 19 16.8 19 12.5V7.5L12 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 8V15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                                    <path d="M8.5 11.5H15.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                        </div>
+                        <img src="{{ asset('images/navlogo.png') }}" alt="Logo Puskesmas" class="h-10 w-auto object-contain">
                         <div class="hidden sm:block">
                             <span class="text-lg font-extrabold text-white tracking-tight drop-shadow-lg">Sistem Antrian</span>
                             <div class="flex items-center gap-1.5 -mt-0.5">
@@ -61,6 +51,84 @@
                         </svg>
                         <span class="relative z-10">{{ __('Dashboard') }}</span>
                     </a>
+
+                    @if(Auth::user()->role === 'patient')
+                    {{-- Profil Saya --}}
+                    <a href="{{ route('patient.profile') }}"
+                       class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300
+                              {{ request()->routeIs('patient.profile')
+                                  ? 'text-white'
+                                  : 'text-white/70 hover:text-white' }}">
+                        @if(request()->routeIs('patient.profile'))
+                            <div class="absolute inset-0 bg-white/15 backdrop-blur-sm rounded-xl border border-white/20"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-xl"></div>
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                        @else
+                            <div class="absolute inset-0 bg-white/0 hover:bg-white/10 rounded-xl transition-all duration-300"></div>
+                        @endif
+                        <svg class="w-4 h-4 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        <span class="relative z-10">Profil Saya</span>
+                    </a>
+
+                    {{-- Daftar Berobat --}}
+                    <a href="{{ route('patient.registrations') }}"
+                       class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300
+                              {{ request()->routeIs('patient.registrations')
+                                  ? 'text-white'
+                                  : 'text-white/70 hover:text-white' }}">
+                        @if(request()->routeIs('patient.registrations'))
+                            <div class="absolute inset-0 bg-white/15 backdrop-blur-sm rounded-xl border border-white/20"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-xl"></div>
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                        @else
+                            <div class="absolute inset-0 bg-white/0 hover:bg-white/10 rounded-xl transition-all duration-300"></div>
+                        @endif
+                        <svg class="w-4 h-4 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />
+                        </svg>
+                        <span class="relative z-10">Daftar Berobat</span>
+                    </a>
+
+                    {{-- Riwayat Pemeriksaan --}}
+                    <a href="{{ route('patient.examinations') }}"
+                       class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300
+                              {{ request()->routeIs('patient.examinations*')
+                                  ? 'text-white'
+                                  : 'text-white/70 hover:text-white' }}">
+                        @if(request()->routeIs('patient.examinations*'))
+                            <div class="absolute inset-0 bg-white/15 backdrop-blur-sm rounded-xl border border-white/20"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-xl"></div>
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                        @else
+                            <div class="absolute inset-0 bg-white/0 hover:bg-white/10 rounded-xl transition-all duration-300"></div>
+                        @endif
+                        <svg class="w-4 h-4 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        <span class="relative z-10">Riwayat Pemeriksaan</span>
+                    </a>
+
+                    {{-- Resep Obat --}}
+                    <a href="{{ route('patient.prescriptions') }}"
+                       class="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300
+                              {{ request()->routeIs('patient.prescriptions')
+                                  ? 'text-white'
+                                  : 'text-white/70 hover:text-white' }}">
+                        @if(request()->routeIs('patient.prescriptions'))
+                            <div class="absolute inset-0 bg-white/15 backdrop-blur-sm rounded-xl border border-white/20"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-xl"></div>
+                            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                        @else
+                            <div class="absolute inset-0 bg-white/0 hover:bg-white/10 rounded-xl transition-all duration-300"></div>
+                        @endif
+                        <svg class="w-4 h-4 relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 0 0-1.022-.547l-2.387-.477a6 6 0 0 0-3.86.517l-.318.158a6 6 0 0 1-3.86.517L6.05 15.21a2 2 0 0 0-1.806.547M8 4h8l-1 1v5.172a2 2 0 0 0 .586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 0 0 9 10.172V5L8 4z" />
+                        </svg>
+                        <span class="relative z-10">Resep Obat</span>
+                    </a>
+                    @endif
                 </div>
             </div>
 
@@ -126,10 +194,7 @@
                             </div>
 
                             <div class="border-t border-gray-100 py-1">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <x-dropdown-link :href="route('logout')"
-                                            onclick="event.preventDefault(); this.closest('form').submit();"
+                                    <x-dropdown-link :href="route('logout.get')"
                                             class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors duration-200 group/logout">
                                         <div class="p-1.5 bg-red-100 rounded-lg group-hover/logout:bg-red-200 transition-colors duration-200">
                                             <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -141,7 +206,6 @@
                                             <span class="block text-[10px] text-red-400">Keluar dari sistem</span>
                                         </div>
                                     </x-dropdown-link>
-                                </form>
                             </div>
                         </x-slot>
                     </x-dropdown>
@@ -185,6 +249,64 @@
                         <div class="ml-auto w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
                     @endif
                 </a>
+
+                @if(Auth::user()->role === 'patient')
+                <a href="{{ route('patient.profile') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300
+                          {{ request()->routeIs('patient.profile')
+                              ? 'bg-white/15 text-white border border-white/20 shadow-lg shadow-white/5'
+                              : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    Profil Saya
+                    @if(request()->routeIs('patient.profile'))
+                        <div class="ml-auto w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                    @endif
+                </a>
+
+                <a href="{{ route('patient.registrations') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300
+                          {{ request()->routeIs('patient.registrations')
+                              ? 'bg-white/15 text-white border border-white/20 shadow-lg shadow-white/5'
+                              : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />
+                    </svg>
+                    Daftar Berobat
+                    @if(request()->routeIs('patient.registrations'))
+                        <div class="ml-auto w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                    @endif
+                </a>
+
+                <a href="{{ route('patient.examinations') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300
+                          {{ request()->routeIs('patient.examinations*')
+                              ? 'bg-white/15 text-white border border-white/20 shadow-lg shadow-white/5'
+                              : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Riwayat Pemeriksaan
+                    @if(request()->routeIs('patient.examinations*'))
+                        <div class="ml-auto w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                    @endif
+                </a>
+
+                <a href="{{ route('patient.prescriptions') }}"
+                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300
+                          {{ request()->routeIs('patient.prescriptions')
+                              ? 'bg-white/15 text-white border border-white/20 shadow-lg shadow-white/5'
+                              : 'text-white/70 hover:bg-white/10 hover:text-white' }}">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 0 0-1.022-.547l-2.387-.477a6 6 0 0 0-3.86.517l-.318.158a6 6 0 0 1-3.86.517L6.05 15.21a2 2 0 0 0-1.806.547M8 4h8l-1 1v5.172a2 2 0 0 0 .586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 0 0 9 10.172V5L8 4z" />
+                    </svg>
+                    Resep Obat
+                    @if(request()->routeIs('patient.prescriptions'))
+                        <div class="ml-auto w-2 h-2 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"></div>
+                    @endif
+                </a>
+                @endif
             </div>
 
             <!-- Responsive Settings Options -->
@@ -212,17 +334,13 @@
                         {{ __('Profile') }}
                     </a>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a href="{{ route('logout') }}"
-                           onclick="event.preventDefault(); this.closest('form').submit();"
+                    <a href="{{ route('logout.get') }}"
                            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-rose-300 hover:bg-rose-500/15 hover:text-rose-200 transition-all duration-300 cursor-pointer">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
                             </svg>
                             {{ __('Log Out') }}
                         </a>
-                    </form>
                 </div>
             </div>
         </div>
