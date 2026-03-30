@@ -35,4 +35,29 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'enabled' => env('WHATSAPP_API_ENABLED', false),
+        'endpoint' => env('WHATSAPP_API_ENDPOINT'),
+        'token' => env('WHATSAPP_API_TOKEN'),
+        'timeout' => env('WHATSAPP_API_TIMEOUT', 10),
+        'providers' => [
+            [
+                'name' => 'primary',
+                'type' => env('WHATSAPP_PRIMARY_TYPE', 'fonnte'),
+                'enabled' => env('WHATSAPP_PRIMARY_ENABLED', true),
+                'endpoint' => env('WHATSAPP_PRIMARY_ENDPOINT'),
+                'token' => env('WHATSAPP_PRIMARY_TOKEN'),
+                'max_retries' => env('WHATSAPP_PRIMARY_RETRIES', 2),
+            ],
+            [
+                'name' => 'fallback',
+                'type' => env('WHATSAPP_FALLBACK_TYPE', 'generic'),
+                'enabled' => env('WHATSAPP_FALLBACK_ENABLED', false),
+                'endpoint' => env('WHATSAPP_FALLBACK_ENDPOINT'),
+                'token' => env('WHATSAPP_FALLBACK_TOKEN'),
+                'max_retries' => env('WHATSAPP_FALLBACK_RETRIES', 1),
+            ],
+        ],
+    ],
+
 ];

@@ -55,8 +55,18 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
+                    ? redirect()->route('login')->with('status', $this->statusMessage($status))
                     : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+                        ->withErrors(['email' => $this->statusMessage($status)]);
+    }
+
+    private function statusMessage(string $status): string
+    {
+        return match ($status) {
+            Password::PASSWORD_RESET => 'Kata sandi berhasil diubah. Silakan login kembali.',
+            Password::INVALID_TOKEN => 'Link reset tidak valid atau sudah kedaluwarsa. Silakan minta link baru.',
+            Password::INVALID_USER => 'Email tidak terdaftar di sistem kami.',
+            default => 'Reset kata sandi gagal diproses. Silakan coba lagi.',
+        };
     }
 }

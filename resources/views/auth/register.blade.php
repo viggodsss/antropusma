@@ -1,8 +1,8 @@
 @extends('layouts.guest')
 
 @section('content')
-    <h1 class="text-2xl font-bold text-gray-800 text-center">Daftar Pasien</h1>
-    <p class="text-sm text-gray-500 text-center mt-1 mb-6">Buat akun baru untuk akses sistem antrian.</p>
+    <h1 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 text-center">Daftar Pasien</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 text-center mt-1 mb-6">Buat akun baru untuk akses sistem antrian.</p>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-4">
         @csrf
@@ -45,7 +45,7 @@
         </div>
 
         <div class="flex items-center justify-between pt-2">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Sudah terdaftar?') }}
             </a>
 

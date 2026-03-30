@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -27,7 +29,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, OtpVerificationController $otpController): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -35,16 +37,32 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'patient',
-            'status' => 'pending',
-        ]);
+        $user = null;
+
+        DB::beginTransaction();
+
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'patient',
+                'status' => 'pending',
+            ]);
+
+            $otpController->issueOtpForUser($user);
+            DB::commit();
+        } catch (\Throwable) {
+            DB::rollBack();
+
+            throw ValidationException::withMessages([
+                'email' => 'OTP gagal dikirim. Periksa konfigurasi email server, lalu coba lagi.',
+            ]);
+        }
 
         event(new Registered($user));
 
-        return redirect('/verification-pending')->with('success', 'Akun Anda telah terdaftar. Menunggu verifikasi admin.');
+        return redirect()->route('otp.verify', ['email' => $user->email])
+            ->with('status', 'Akun berhasil didaftarkan. Kode OTP telah dikirim ke email Anda.');
     }
 }
